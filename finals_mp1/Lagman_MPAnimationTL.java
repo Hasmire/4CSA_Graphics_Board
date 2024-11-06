@@ -3,6 +3,7 @@ package finals_mp1;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.Map;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -45,10 +46,10 @@ public class Lagman_MPAnimationTL extends JPanel {
             State.STP1_RDY2, "yellow");
 
     public Lagman_MPAnimationTL() {
-        Timer stateTimer = new Timer(1000, e -> {
+        int delay = 1000;
+        ActionListener stoplightSimulation = e -> {
             road1Timer--;
             road2Timer--;
-
             if (road1Timer == 0 || road2Timer == 0) {
                 switch (currentState) {
                     case START:
@@ -69,7 +70,9 @@ public class Lagman_MPAnimationTL extends JPanel {
                 }
             }
             repaint();
-        });
+        };
+
+        Timer stateTimer = new Timer(delay, stoplightSimulation);
         stateTimer.start();
     }
 
