@@ -1,60 +1,69 @@
+package finals_mp1;
+
 import java.awt.*;
 import java.awt.geom.*;
-import java.util.Date;
+import java.util.Map;
 
 import javax.swing.*;
 
-public class TrafficLight extends JPanel {
+public class Lagman_MPAnimationTL extends JPanel {
 
     private enum State {
         START, GO1_STP2, RDY1_STP2, STP1_GO2, STP1_RDY2
     }
 
-    private State state = State.START;
+    private State currentState = State.START;
     private int baseTimer = 3;
     private int road1Timer = 3;
     private int road2Timer = 3;
 
-    private int redDuration = 33;
-    private int greenDuration = 30;
-    private int yellowDuration = 3;
-    private int baseDuration = 30;
+    private static final int RED_DURATION = 33;
+    private static final int GREEN_DURATION = 30;
+    private static final int YELLOW_DURATION = 3;
+    private static final int BASE_DURATION = 30;
 
-    public TrafficLight() {
+    private static final Map<String, Color> COLORS = Map.of(
+            "red", new Color(242, 42, 45),
+            "yellow", new Color(255, 153, 6),
+            "green", new Color(3, 209, 118),
+            "outline", new Color(13, 26, 32));
+
+    private Map<State, String> road1LightMap = Map.of(
+            State.START, "red",
+            State.GO1_STP2, "green",
+            State.RDY1_STP2, "yellow",
+            State.STP1_GO2, "red",
+            State.STP1_RDY2, "red");
+
+    private Map<State, String> road2LightMap = Map.of(
+            State.START, "red",
+            State.GO1_STP2, "red",
+            State.RDY1_STP2, "red",
+            State.STP1_GO2, "green",
+            State.STP1_RDY2, "yellow");
+
+    public Lagman_MPAnimationTL() {
         Timer stateTimer = new Timer(1000, e -> {
             baseTimer--;
             road1Timer--;
             road2Timer--;
 
             if (baseTimer == 0) {
-                switch (state) {
+                switch (currentState) {
                     case START:
-                        state = State.GO1_STP2;
-                        baseTimer = baseDuration;
-                        road1Timer = greenDuration;
-                        road2Timer = redDuration;
+                        transitionState(State.GO1_STP2, BASE_DURATION, GREEN_DURATION, RED_DURATION);
                         break;
                     case GO1_STP2:
-                        state = State.RDY1_STP2;
-                        baseTimer = yellowDuration;
-                        road1Timer = yellowDuration;
+                        transitionState(State.RDY1_STP2, YELLOW_DURATION, YELLOW_DURATION, road2Timer);
                         break;
                     case RDY1_STP2:
-                        state = State.STP1_GO2;
-                        baseTimer = baseDuration;
-                        road1Timer = redDuration;
-                        road2Timer = greenDuration;
+                        transitionState(State.STP1_GO2, BASE_DURATION, RED_DURATION, GREEN_DURATION);
                         break;
                     case STP1_GO2:
-                        state = State.STP1_RDY2;
-                        baseTimer = yellowDuration;
-                        road2Timer = yellowDuration;
+                        transitionState(State.STP1_RDY2, YELLOW_DURATION, road1Timer, YELLOW_DURATION);
                         break;
                     case STP1_RDY2:
-                        state = State.GO1_STP2;
-                        baseTimer = baseDuration;
-                        road1Timer = greenDuration;
-                        road2Timer = redDuration;
+                        transitionState(State.GO1_STP2, BASE_DURATION, GREEN_DURATION, RED_DURATION);
                         break;
                 }
             }
@@ -69,73 +78,37 @@ public class TrafficLight extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        drawTrafficLight(g2d, 100, 40, "Road 1", road1Timer);
-
-        drawTrafficLight(g2d, 500, 40, "Road 2", road2Timer);
+        drawTrafficLight(g2d, 100, 40, "Road 1", road1Timer, getLightColor("Road 1"));
+        drawTrafficLight(g2d, 500, 40, "Road 2", road2Timer, getLightColor("Road 2"));
     }
 
-    private void drawLight(Graphics2D g2d, String color) {
-        switch (color) {
-            case "red":
-                Ellipse2D.Double redLight = new Ellipse2D.Double(63, 92, 53, 54);
-                g2d.setColor(new Color(242, 42, 45));
-                g2d.fill(redLight);
-                g2d.setColor(Color.BLACK);
-                g2d.draw(redLight);
-                break;
-            case "yellow":
-                Ellipse2D.Double yellowLight = new Ellipse2D.Double(63, 170, 53, 54);
-                g2d.setColor(new Color(255, 153, 6));
-                g2d.fill(yellowLight);
-                g2d.setColor(Color.BLACK);
-                g2d.draw(yellowLight);
-                break;
-            case "green":
-                Ellipse2D.Double greenLight = new Ellipse2D.Double(63, 248, 53, 54);
-                g2d.setColor(new Color(3, 209, 118));
-                g2d.fill(greenLight);
-                g2d.setColor(Color.BLACK);
-                g2d.draw(greenLight);
-                break;
-            default:
-                break;
-        }
+    private void transitionState(State nextState, int newBaseTimer, int newRoad1Timer, int newRoad2Timer) {
+        currentState = nextState;
+        baseTimer = newBaseTimer;
+        road1Timer = newRoad1Timer;
+        road2Timer = newRoad2Timer;
     }
 
-    private String returnLightColor(String roadText) {
-        if (roadText == "Road 1") {
-            switch (state) {
-                case GO1_STP2:
-                    return "green";
-                case RDY1_STP2:
-                    return "yellow";
-                case STP1_GO2:
-                    return "red";
-                case STP1_RDY2:
-                    return "red";
-                default:
-                    return "red";
-            }
-        } else {
-            switch (state) {
-                case GO1_STP2:
-                    return "red";
-                case RDY1_STP2:
-                    return "red";
-                case STP1_GO2:
-                    return "green";
-                case STP1_RDY2:
-                    return "yellow";
-                default:
-                    return "red";
-            }
-        }
+    private String getLightColor(String road) {
+        return road.equals("Road 1") ? road1LightMap.get(currentState) : road2LightMap.get(currentState);
     }
 
-    private void drawTrafficLight(Graphics2D g2d, int translateX, int translateY, String roadText, int timerText) {
-        String color = returnLightColor(roadText);
-        g2d.translate(translateX, translateY);
+    private Color getActiveColor(String color) {
+        return COLORS.getOrDefault(color, Color.BLACK);
+    }
 
+    private void drawTrafficLight(Graphics2D g2d, int x, int y, String roadName, int timer, String lightColor) {
+        g2d.translate(x, y);
+
+        drawStoplightFrame(g2d);
+        drawLight(g2d, lightColor);
+        drawTimerText(g2d, timer, lightColor);
+        drawRoadLabel(g2d, roadName);
+
+        g2d.translate(-x, -y);
+    }
+
+    private void drawStoplightFrame(Graphics2D g2d) {
         GeneralPath body = new GeneralPath();
         body.moveTo(103, 320);
         body.lineTo(76, 320);
@@ -207,8 +180,6 @@ public class TrafficLight extends JPanel {
         g2d.fill(circle);
         g2d.setColor(Color.BLACK);
         g2d.draw(circle);
-
-        drawLight(g2d, color);
 
         GeneralPath side = new GeneralPath();
         side.moveTo(176, 164);
@@ -301,33 +272,58 @@ public class TrafficLight extends JPanel {
         top.closePath();
         g2d.setColor(new Color(13, 26, 32));
         g2d.fill(top);
+    }
+
+    private void drawLight(Graphics2D g2d, String color) {
+        drawLightOutline(g2d, 57, 86);
+        drawLightOutline(g2d, 57, 164);
+        drawLightOutline(g2d, 57, 242);
 
         switch (color) {
             case "red":
-                g2d.setColor(new Color(242, 42, 45));
+                drawColoredLight(g2d, color, 63, 92);
                 break;
             case "yellow":
-                g2d.setColor(new Color(255, 153, 6));
+                drawColoredLight(g2d, color, 63, 170);
                 break;
             case "green":
-                g2d.setColor(new Color(3, 209, 118));
-                break;
-            default:
+                drawColoredLight(g2d, color, 63, 248);
                 break;
         }
-        g2d.setFont(new Font("Gill Sans MT", Font.BOLD, 30));
-        g2d.drawString(String.valueOf(timerText), 71, 50);
+    }
 
+    private void drawLightOutline(Graphics2D g2d, int x, int y) {
+        Ellipse2D.Double outline = new Ellipse2D.Double(x, y, 65, 65);
+        g2d.setColor(new Color(13, 26, 32));
+        g2d.fill(outline);
         g2d.setColor(Color.BLACK);
-        g2d.setFont(new Font("Gill Sans MT", Font.BOLD, 20));
-        g2d.drawString(roadText, 59, 620);
+        g2d.draw(outline);
+    }
 
-        g2d.translate(-translateX, -translateY);
+    private void drawColoredLight(Graphics2D g2d, String color, int x, int y) {
+        Ellipse2D.Double light = new Ellipse2D.Double(x, y, 53, 54);
+        g2d.setColor(getActiveColor(color));
+        g2d.fill(light);
+        g2d.setColor(Color.BLACK);
+        g2d.draw(light);
+    }
+
+    private void drawTimerText(Graphics2D g2d, int timer, String color) {
+        g2d.setFont(new Font("Gill Sans MT", Font.BOLD, 30));
+        g2d.setColor(getActiveColor(color));
+        g2d.drawString(String.valueOf(timer), 73, 50);
+    }
+
+    private void drawRoadLabel(Graphics2D g2d, String roadName) {
+        g2d.setFont(new Font("Gill Sans MT", Font.BOLD, 20));
+        g2d.setColor(Color.BLACK);
+        g2d.drawString(roadName, 59, 620);
     }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.add(new TrafficLight());
+        frame.add(new Lagman_MPAnimationTL());
+        frame.setTitle("MP1_Finals_Lagman_Animation_Traffic Lights");
         frame.setSize(800, 750);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
