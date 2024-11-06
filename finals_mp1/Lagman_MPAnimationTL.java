@@ -26,7 +26,12 @@ public class Lagman_MPAnimationTL extends JPanel {
             "red", new Color(242, 42, 45),
             "yellow", new Color(255, 153, 6),
             "green", new Color(3, 209, 118),
-            "outline", new Color(13, 26, 32));
+            "outline", new Color(13, 26, 32),
+            "body", new Color(156, 155, 151),
+            "base", new Color(122, 113, 114),
+            "bottom", new Color(82, 82, 80),
+            "frame", new Color(16, 52, 66),
+            "side", new Color(13, 26, 32));
 
     private Map<State, String> road1LightMap = Map.of(
             State.START, "red",
@@ -115,7 +120,7 @@ public class Lagman_MPAnimationTL extends JPanel {
         body.lineTo(76, 543);
         body.lineTo(103, 543);
         body.closePath();
-        g2d.setColor(new Color(156, 155, 151));
+        g2d.setColor(COLORS.get("body"));
         g2d.fill(body);
         g2d.setColor(Color.BLACK);
         g2d.draw(body);
@@ -126,7 +131,7 @@ public class Lagman_MPAnimationTL extends JPanel {
         base.lineTo(68, 562);
         base.lineTo(110, 562);
         base.closePath();
-        g2d.setColor(new Color(122, 113, 114));
+        g2d.setColor(COLORS.get("base"));
         g2d.fill(base);
         g2d.setColor(Color.BLACK);
         g2d.draw(base);
@@ -142,7 +147,7 @@ public class Lagman_MPAnimationTL extends JPanel {
         bottom.lineTo(132, 570);
         bottom.curveTo(132, 565, 131, 563, 125, 562);
         bottom.closePath();
-        g2d.setColor(new Color(82, 82, 80));
+        g2d.setColor(COLORS.get("bottom"));
         g2d.fill(bottom);
         g2d.setColor(Color.BLACK);
         g2d.draw(bottom);
@@ -158,28 +163,10 @@ public class Lagman_MPAnimationTL extends JPanel {
         frame.lineTo(140, 317);
         frame.curveTo(140, 319, 140, 319, 137, 320);
         frame.closePath();
-        g2d.setColor(new Color(16, 52, 66));
+        g2d.setColor(COLORS.get("frame"));
         g2d.fill(frame);
         g2d.setColor(Color.BLACK);
         g2d.draw(frame);
-
-        Ellipse2D.Double circle = new Ellipse2D.Double(57, 86, 65, 65);
-        g2d.setColor(new Color(13, 26, 32));
-        g2d.fill(circle);
-        g2d.setColor(Color.BLACK);
-        g2d.draw(circle);
-
-        circle = new Ellipse2D.Double(57, 164, 65, 65);
-        g2d.setColor(new Color(13, 26, 32));
-        g2d.fill(circle);
-        g2d.setColor(Color.BLACK);
-        g2d.draw(circle);
-
-        circle = new Ellipse2D.Double(57, 242, 65, 65);
-        g2d.setColor(new Color(13, 26, 32));
-        g2d.fill(circle);
-        g2d.setColor(Color.BLACK);
-        g2d.draw(circle);
 
         GeneralPath side = new GeneralPath();
         side.moveTo(176, 164);
@@ -189,7 +176,7 @@ public class Lagman_MPAnimationTL extends JPanel {
         side.lineTo(161, 195);
         side.curveTo(173, 183, 175, 176, 176, 164);
         side.closePath();
-        g2d.setColor(new Color(13, 26, 32));
+        g2d.setColor(COLORS.get("side"));
         g2d.fill(side);
         g2d.setColor(Color.BLACK);
         g2d.draw(side);
@@ -203,7 +190,7 @@ public class Lagman_MPAnimationTL extends JPanel {
         side.lineTo(161, 119);
         side.curveTo(173, 107, 175, 100, 176, 88);
         side.closePath();
-        g2d.setColor(new Color(13, 26, 32));
+        g2d.setColor(COLORS.get("side"));
         g2d.fill(side);
         g2d.setColor(Color.BLACK);
         g2d.draw(side);
@@ -217,7 +204,7 @@ public class Lagman_MPAnimationTL extends JPanel {
         side.lineTo(161, 273);
         side.curveTo(173, 261, 175, 254, 176, 242);
         side.closePath();
-        g2d.setColor(new Color(13, 26, 32));
+        g2d.setColor(COLORS.get("side"));
         g2d.fill(side);
         g2d.setColor(Color.BLACK);
         g2d.draw(side);
@@ -230,7 +217,7 @@ public class Lagman_MPAnimationTL extends JPanel {
         side.lineTo(16, 273);
         side.curveTo(4, 261, 2, 254, 1, 242);
         side.closePath();
-        g2d.setColor(new Color(13, 26, 32));
+        g2d.setColor(COLORS.get("side"));
         g2d.fill(side);
         g2d.setColor(Color.BLACK);
         g2d.draw(side);
@@ -243,7 +230,7 @@ public class Lagman_MPAnimationTL extends JPanel {
         side.lineTo(16, 195);
         side.curveTo(4, 183, 2, 176, 1, 164);
         side.closePath();
-        g2d.setColor(new Color(13, 26, 32));
+        g2d.setColor(COLORS.get("side"));
         g2d.fill(side);
         g2d.setColor(Color.BLACK);
         g2d.draw(side);
@@ -256,7 +243,7 @@ public class Lagman_MPAnimationTL extends JPanel {
         side.lineTo(16, 119);
         side.curveTo(4, 107, 2, 100, 1, 88);
         side.closePath();
-        g2d.setColor(new Color(13, 26, 32));
+        g2d.setColor(COLORS.get("side"));
         g2d.fill(side);
         g2d.setColor(Color.BLACK);
         g2d.draw(side);
@@ -270,7 +257,7 @@ public class Lagman_MPAnimationTL extends JPanel {
         top.lineTo(45, 74);
         top.lineTo(45, 6);
         top.closePath();
-        g2d.setColor(new Color(13, 26, 32));
+        g2d.setColor(COLORS.get("side"));
         g2d.fill(top);
     }
 
@@ -294,7 +281,7 @@ public class Lagman_MPAnimationTL extends JPanel {
 
     private void drawLightOutline(Graphics2D g2d, int x, int y) {
         Ellipse2D.Double outline = new Ellipse2D.Double(x, y, 65, 65);
-        g2d.setColor(new Color(13, 26, 32));
+        g2d.setColor(COLORS.get("outline"));
         g2d.fill(outline);
         g2d.setColor(Color.BLACK);
         g2d.draw(outline);
