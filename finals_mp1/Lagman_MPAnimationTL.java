@@ -13,14 +13,11 @@ public class Lagman_MPAnimationTL extends JPanel {
     }
 
     private State currentState = State.START;
-    private int baseTimer = 3;
     private int road1Timer = 3;
     private int road2Timer = 3;
-
     private static final int RED_DURATION = 33;
     private static final int GREEN_DURATION = 30;
     private static final int YELLOW_DURATION = 3;
-    private static final int BASE_DURATION = 30;
 
     private static final Map<String, Color> COLORS = Map.of(
             "red", new Color(242, 42, 45),
@@ -49,26 +46,25 @@ public class Lagman_MPAnimationTL extends JPanel {
 
     public Lagman_MPAnimationTL() {
         Timer stateTimer = new Timer(1000, e -> {
-            baseTimer--;
             road1Timer--;
             road2Timer--;
 
-            if (baseTimer == 0) {
+            if (road1Timer == 0 || road2Timer == 0) {
                 switch (currentState) {
                     case START:
-                        transitionState(State.GO1_STP2, BASE_DURATION, GREEN_DURATION, RED_DURATION);
+                        transitionState(State.GO1_STP2, GREEN_DURATION, RED_DURATION);
                         break;
                     case GO1_STP2:
-                        transitionState(State.RDY1_STP2, YELLOW_DURATION, YELLOW_DURATION, road2Timer);
+                        transitionState(State.RDY1_STP2, YELLOW_DURATION, road2Timer);
                         break;
                     case RDY1_STP2:
-                        transitionState(State.STP1_GO2, BASE_DURATION, RED_DURATION, GREEN_DURATION);
+                        transitionState(State.STP1_GO2, RED_DURATION, GREEN_DURATION);
                         break;
                     case STP1_GO2:
-                        transitionState(State.STP1_RDY2, YELLOW_DURATION, road1Timer, YELLOW_DURATION);
+                        transitionState(State.STP1_RDY2, road1Timer, YELLOW_DURATION);
                         break;
                     case STP1_RDY2:
-                        transitionState(State.GO1_STP2, BASE_DURATION, GREEN_DURATION, RED_DURATION);
+                        transitionState(State.GO1_STP2, GREEN_DURATION, RED_DURATION);
                         break;
                 }
             }
@@ -87,9 +83,8 @@ public class Lagman_MPAnimationTL extends JPanel {
         drawTrafficLight(g2d, 500, 40, "Road 2", road2Timer, getLightColor("Road 2"));
     }
 
-    private void transitionState(State nextState, int newBaseTimer, int newRoad1Timer, int newRoad2Timer) {
+    private void transitionState(State nextState, int newRoad1Timer, int newRoad2Timer) {
         currentState = nextState;
-        baseTimer = newBaseTimer;
         road1Timer = newRoad1Timer;
         road2Timer = newRoad2Timer;
     }
