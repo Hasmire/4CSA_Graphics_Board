@@ -3,6 +3,7 @@ package finals_mp2;
 import java.awt.*;
 import java.awt.geom.*;
 import java.util.Map;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -70,50 +71,50 @@ public class Lagman_MPAnimationTL extends JPanel {
             e.printStackTrace();
         }
 
-        ActionListener stoplightSimulation = e -> {
-            road1Timer--;
-            road2Timer--;
-            if (road1Timer == 0 || road2Timer == 0) {
-                switch (currentState) {
-                    case START:
-                        transitionState(State.GO1_STP2, GREEN_DURATION, RED_DURATION);
-                        break;
-                    case GO1_STP2:
-                        transitionState(State.RDY1_STP2, YELLOW_DURATION, road2Timer);
-                        resetCarPositions();
-                        break;
-                    case RDY1_STP2:
-                        transitionState(State.STP1_GO2, RED_DURATION, GREEN_DURATION);
-                        break;
-                    case STP1_GO2:
-                        transitionState(State.STP1_RDY2, road1Timer, YELLOW_DURATION);
-                        resetCarPositions();
-                        break;
-                    case STP1_RDY2:
-                        transitionState(State.GO1_STP2, GREEN_DURATION, RED_DURATION);
-                        resetCarPositions();
-                        break;
-                }
-            }
-
-            repaint();
-        };
-
-        ActionListener carSimulation = e -> {
-            if (currentState == State.STP1_GO2) {
-                car1PositionX += carSpeed;
-                car2PositionX -= carSpeed;
-            } else if (currentState == State.GO1_STP2) {
-                car3PositionY += carSpeed;
-                car4PositionY -= carSpeed;
-            }
-            repaint();
-        };
-
-        Timer stateTimer = new Timer(1000, stoplightSimulation);
+        Timer stateTimer = new Timer(1000, this::stoplightSimulation);
         stateTimer.start();
-        Timer carTimer = new Timer(10, carSimulation);
+
+        Timer carTimer = new Timer(10, this::carSimulation);
         carTimer.start();
+    }
+
+    private void stoplightSimulation(ActionEvent e) {
+        road1Timer--;
+        road2Timer--;
+        if (road1Timer == 0 || road2Timer == 0) {
+            switch (currentState) {
+                case START:
+                    transitionState(State.GO1_STP2, GREEN_DURATION, RED_DURATION);
+                    break;
+                case GO1_STP2:
+                    transitionState(State.RDY1_STP2, YELLOW_DURATION, road2Timer);
+                    resetCarPositions();
+                    break;
+                case RDY1_STP2:
+                    transitionState(State.STP1_GO2, RED_DURATION, GREEN_DURATION);
+                    break;
+                case STP1_GO2:
+                    transitionState(State.STP1_RDY2, road1Timer, YELLOW_DURATION);
+                    resetCarPositions();
+                    break;
+                case STP1_RDY2:
+                    transitionState(State.GO1_STP2, GREEN_DURATION, RED_DURATION);
+                    resetCarPositions();
+                    break;
+            }
+        }
+        repaint();
+    }
+
+    private void carSimulation(ActionEvent e) {
+        if (currentState == State.STP1_GO2) {
+            car1PositionX += carSpeed;
+            car2PositionX -= carSpeed;
+        } else if (currentState == State.GO1_STP2) {
+            car3PositionY += carSpeed;
+            car4PositionY -= carSpeed;
+        }
+        repaint();
     }
 
     @Override
