@@ -418,7 +418,7 @@ public class Lagman_MPAnimationTL extends JPanel {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.add(new Lagman_MPAnimationTL());
-        frame.setTitle("MP2_Finals_Lagman_Animation_Traffic Lights With Car");
+        frame.setTitle("MP2_Finals_Lagman_Animation_Traffic Light Crossing");
         frame.setSize(1200, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
