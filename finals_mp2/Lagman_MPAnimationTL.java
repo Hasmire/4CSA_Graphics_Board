@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.Map;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
