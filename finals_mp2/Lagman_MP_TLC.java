@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
-public class Lagman_MPAnimationTLC extends JPanel {
+public class Lagman_MP_TLC extends JPanel {
 
     private BufferedImage carImage;
 
@@ -62,7 +62,7 @@ public class Lagman_MPAnimationTLC extends JPanel {
             State.STP1_GO2, "green",
             State.STP1_RDY2, "yellow");
 
-    public Lagman_MPAnimationTLC() {
+    public Lagman_MP_TLC() {
         setBackground(COLORS.get("road_green"));
         try {
             carImage = ImageIO.read(getClass().getResource("car.png"));
@@ -417,7 +417,7 @@ public class Lagman_MPAnimationTLC extends JPanel {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.add(new Lagman_MPAnimationTLC());
+        frame.add(new Lagman_MP_TLC());
         frame.setTitle("MP2_Finals_Lagman_Animation_Traffic Light Crossing");
         frame.setSize(1200, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
