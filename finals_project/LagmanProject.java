@@ -9,7 +9,6 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 
 public class LagmanProject extends JPanel {
-
     private BufferedImage backgroundImage;
     private Image mayImage, pidgeotImage, jolteonImage, pidgeyImage, manectricImage, pikachuImage;
 
@@ -77,7 +76,6 @@ public class LagmanProject extends JPanel {
     }
 
     private void initializeTimers() {
-        // Timer to update background scrolling
         new Timer(1, e -> {
             updateBackgroundOffset();
             if (checkAllOutOfBounds()) {
@@ -86,7 +84,6 @@ public class LagmanProject extends JPanel {
             repaint();
         }).start();
 
-        // Timer to update positions of entities
         new Timer(60, e -> {
             updateMayPosition();
             updatePidgeotPosition();
@@ -199,15 +196,16 @@ public class LagmanProject extends JPanel {
         long currentTime = System.currentTimeMillis();
 
         if (currentTime - pikachuLastJumpTime > 1000 && Math.random() > 0.7) {
-            int deltaX = (Math.random() > 0.5 ? 1 : -1) * 30;
-            int deltaY = (Math.random() > 0.5 ? 1 : -1) * 60;
-
-            pikachuPosition.translate(deltaX, deltaY);
-            pikachuPosition.y = Math.max(pikachuMinY, Math.min(pikachuMaxY, pikachuPosition.y));
-
             pikachuLastJumpTime = currentTime;
+            int deltaX = -20;
+            int deltaY = (Math.random() > 0.5 ? 1 : -1) * 60;
+            pikachuPosition.translate(deltaX, deltaY);
         } else {
-            pikachuPosition.x -= 5;
+            pikachuPosition.x -= 4;
+        }
+
+        if (pikachuPosition.y < pikachuMinY || pikachuPosition.y > pikachuMaxY) {
+            pikachuPosition.y = pikachuMinY + (int) (Math.random() * (pikachuMaxY - pikachuMinY));
         }
     }
 
