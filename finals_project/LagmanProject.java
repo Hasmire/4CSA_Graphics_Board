@@ -100,6 +100,7 @@ public class LagmanProject extends JPanel {
         pidgeot.setStartTime(System.currentTimeMillis());
         jolteon.resetPosition(new Point(1300, 600));
         manectric.resetPosition(new Point(1600, 560));
+        manectric.setStartTime(System.currentTimeMillis());
         pikachu.resetPosition(new Point(1850, 480));
         lapras.resetPosition(new Point(1400, 400));
         pidgeys[0].resetPosition(new Point(1250, 300));

@@ -6,7 +6,7 @@ import java.awt.Point;
 
 public class Manectric extends AnimatedImage {
   private long startTime;
-  private int speed = 2;
+  private int speed = 1;
 
   public Manectric(Point initialPosition) {
     super("finals_project/images/manectric.gif", initialPosition, 0.40);
@@ -16,7 +16,12 @@ public class Manectric extends AnimatedImage {
   @Override
   public void updatePosition() {
     long elapsedTime = System.currentTimeMillis() - startTime;
-    speed = Math.min(10, 2 + (int) (elapsedTime / 1000));
+    speed = Math.min(8, 2 + (int) (elapsedTime / 1000));
     position.x -= speed;
+  }
+
+  @Override
+  public void setStartTime(long startTime) {
+    this.startTime = startTime;
   }
 }
