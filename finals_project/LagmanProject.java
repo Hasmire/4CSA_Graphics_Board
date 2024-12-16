@@ -95,19 +95,19 @@ public class LagmanProject extends JPanel {
     }
 
     private void resetAllPositions() {
-        may.resetPosition(new Point(1200, 420));
-        pidgeot.resetPosition(new Point(2400, 0));
+        may.resetPosition();
+        pidgeot.resetPosition();
         pidgeot.setStartTime(System.currentTimeMillis());
-        jolteon.resetPosition(new Point(1300, 600));
-        manectric.resetPosition(new Point(1600, 560));
+        jolteon.resetPosition();
+        manectric.resetPosition();
         manectric.setStartTime(System.currentTimeMillis());
-        pikachu.resetPosition(new Point(1850, 480));
-        lapras.resetPosition(new Point(1400, 400));
-        pidgeys[0].resetPosition(new Point(1250, 300));
-        pidgeys[1].resetPosition(new Point(1300, 200));
-        pidgeys[2].resetPosition(new Point(1350, 240));
-        pidgeys[3].resetPosition(new Point(1400, 160));
-        pidgeys[4].resetPosition(new Point(1450, 220));
+        pikachu.resetPosition();
+        lapras.resetPosition();
+        pidgeys[0].resetPosition();
+        pidgeys[1].resetPosition();
+        pidgeys[2].resetPosition();
+        pidgeys[3].resetPosition();
+        pidgeys[4].resetPosition();
     }
 
     private void playBackgroundMusic(String filePath) {

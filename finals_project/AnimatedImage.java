@@ -6,12 +6,14 @@ import javax.swing.*;
 
 public class AnimatedImage {
   protected Image image;
+  protected Point initialPosition;
   protected Point position;
   protected double scale;
 
   public AnimatedImage(String imagePath, Point initialPosition, double scale) {
     this.image = new ImageIcon(imagePath).getImage();
-    this.position = initialPosition;
+    this.initialPosition = new Point(initialPosition);
+    this.position = new Point(initialPosition);
     this.scale = scale;
   }
 
@@ -28,8 +30,8 @@ public class AnimatedImage {
     return position.x + image.getWidth(null) < 0;
   }
 
-  public void resetPosition(Point newPosition) {
-    this.position = newPosition;
+  public void resetPosition() {
+    this.position.setLocation(this.initialPosition);
   }
 
   public void updatePosition() {
