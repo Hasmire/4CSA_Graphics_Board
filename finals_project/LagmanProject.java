@@ -10,7 +10,7 @@ import javax.swing.*;
 
 public class LagmanProject extends JPanel {
     private BufferedImage backgroundImage;
-    private Image mayImage, pidgeotImage, jolteonImage, pidgeyImage, manectricImage, pikachuImage;
+    private Image mayImage, pidgeotImage, jolteonImage, pidgeyImage, manectricImage, pikachuImage, laprasImage;
 
     private final Point backgroundOffset = new Point(0, 0);
     private final Point mayPosition = new Point(1200, 420);
@@ -18,13 +18,15 @@ public class LagmanProject extends JPanel {
     private final Point jolteonPosition = new Point(1300, 600);
     private final Point[] pidgeyPositions = {
             new Point(1250, 300),
-            new Point(1350, 200),
-            new Point(1450, 240),
-            new Point(1550, 160),
-            new Point(1650, 220),
+            new Point(1300, 200),
+            new Point(1350, 240),
+            new Point(1400, 160),
+            new Point(1450, 220),
     };
+
     private final Point manectricPosition = new Point(1600, 560);
     private final Point pikachuPosition = new Point(1850, 480);
+    private final Point laprasPosition = new Point(1400, 400);
 
     private final double mayScale = 0.40;
     private final double pidgeotScale = 0.70;
@@ -32,18 +34,23 @@ public class LagmanProject extends JPanel {
     private final double pidgeyScale = 0.40;
     private final double manectricScale = 0.40;
     private final double pikachuScale = 0.20;
+    private final double laprasScale = 0.50;
 
-    private long pidgeotStartTime, jolteonStartTime, pikachuLastJumpTime, manectricStartTime = 0;
+    private long pidgeotStartTime, jolteonStartTime, pikachuLastJumpTime, manectricStartTime, laprasStartTime = 0;
     private boolean isPidgeotFlipped = false;
-
     private int manectricSpeed = 2;
     private final int pikachuMaxY = 670;
     private final int pikachuMinY = 540;
+    private final int laprasMinY = 398;
+    private final int laprasMaxY = 403;
 
     public LagmanProject() {
         loadImages();
         initializeTimers();
         pidgeotStartTime = System.currentTimeMillis();
+        jolteonStartTime = System.currentTimeMillis();
+        laprasStartTime = System.currentTimeMillis();
+        manectricStartTime = System.currentTimeMillis();
         playBackgroundMusic("finals_project/sound/music.wav");
     }
 
@@ -55,6 +62,7 @@ public class LagmanProject extends JPanel {
         pidgeyImage = loadImage("finals_project/images/pidgey.gif");
         manectricImage = loadImage("finals_project/images/manectric.gif");
         pikachuImage = loadImage("finals_project/images/pikachu.gif");
+        laprasImage = loadImage("finals_project/images/lapras.gif");
     }
 
     private BufferedImage loadBufferedImage(String path) {
@@ -91,6 +99,7 @@ public class LagmanProject extends JPanel {
             updatePidgeyPositions();
             updateManectricPosition();
             updatePikachuPosition();
+            updateLaprasPosition();
             repaint();
         }).start();
     }
@@ -102,6 +111,7 @@ public class LagmanProject extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         drawBackground(g2d);
+        drawImage(g2d, laprasImage, laprasPosition, laprasScale);
         drawImage(g2d, mayImage, mayPosition, mayScale);
         drawImage(g2d, pidgeotImage, pidgeotPosition, pidgeotScale);
         drawImage(g2d, jolteonImage, jolteonPosition, jolteonScale);
@@ -183,10 +193,6 @@ public class LagmanProject extends JPanel {
     }
 
     private void updateManectricPosition() {
-        if (manectricStartTime == 0) {
-            manectricStartTime = System.currentTimeMillis();
-        }
-
         long elapsedTime = System.currentTimeMillis() - manectricStartTime;
         manectricSpeed = Math.min(10, 2 + (int) (elapsedTime / 1000));
         manectricPosition.x -= manectricSpeed;
@@ -207,6 +213,17 @@ public class LagmanProject extends JPanel {
         if (pikachuPosition.y < pikachuMinY || pikachuPosition.y > pikachuMaxY) {
             pikachuPosition.y = pikachuMinY + (int) (Math.random() * (pikachuMaxY - pikachuMinY));
         }
+    }
+
+    private void updateLaprasPosition() {
+        laprasPosition.x -= 3;
+
+        long elapsedTime = System.currentTimeMillis() - laprasStartTime;
+        double frequency = 0.005;
+        double amplitude = (laprasMaxY - laprasMinY) / 2.0;
+        double centerY = (laprasMaxY + laprasMinY) / 2.0;
+
+        laprasPosition.y = (int) (centerY + amplitude * Math.sin(frequency * elapsedTime));
     }
 
     private boolean checkAllOutOfBounds() {
@@ -232,16 +249,18 @@ public class LagmanProject extends JPanel {
     }
 
     private void resetAllPositions() {
-        mayPosition.x = getWidth();
-        pidgeotPosition.x = getWidth();
-        jolteonPosition.x = getWidth();
-        manectricPosition.x = getWidth();
-        pikachuPosition.x = getWidth();
-        pidgeyPositions[0] = new Point(1200, 300);
-        pidgeyPositions[1] = new Point(1250, 200);
-        pidgeyPositions[2] = new Point(1300, 240);
-        pidgeyPositions[3] = new Point(1350, 160);
-        pidgeyPositions[4] = new Point(1400, 220);
+        mayPosition.x = 1200;
+        pidgeotPosition.x = 2200;
+        jolteonPosition.x = 1300;
+        manectricPosition.x = 1600;
+        pikachuPosition.x = 1850;
+        laprasPosition.x = 1400;
+        pidgeyPositions[0] = new Point(1250, 300);
+        pidgeyPositions[1] = new Point(1300, 200);
+        pidgeyPositions[2] = new Point(1350, 240);
+        pidgeyPositions[3] = new Point(1400, 160);
+        pidgeyPositions[4] = new Point(1450, 220);
+        pidgeotStartTime = System.currentTimeMillis();
     }
 
     private void playBackgroundMusic(String filePath) {
